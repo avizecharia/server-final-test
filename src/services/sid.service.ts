@@ -17,8 +17,8 @@ export const getFileData = async <T>(): Promise<T[] | void> => {
     );
     const parsaData: T[] = await JSON.parse(dataFromFile);
     return parsaData;
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.log(err);
   }
 };
 
@@ -44,8 +44,8 @@ export const ceedSchema1 = async (): Promise<void> => {
       }
     }
     console.log("1");
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.log(err);
   }
 };
 
@@ -74,8 +74,8 @@ export const ceedSchema1Attack2 = async (): Promise<void> => {
       }
       console.log("1/2");
     }
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.log(err);
   }
 };
 
@@ -114,8 +114,8 @@ export const ceedSchema2 = async (): Promise<void> => {
       }
     }
     console.log("2");
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.log(err);
   }
 };
 
@@ -141,8 +141,8 @@ export const ceedSchema3 = async (): Promise<void> => {
       }
     }
     console.log(3);
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.log(err);
   }
 };
 
@@ -181,8 +181,8 @@ export const ceedOrgan = async (): Promise<void> => {
       }
     }
     console.log(4);
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.log(err);
   }
 };
 export const ceedSchema4 = async (): Promise<void> => {
@@ -210,8 +210,8 @@ export const ceedSchema4 = async (): Promise<void> => {
       }
     }
     console.log(4);
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.log(err);
   }
 };
 
@@ -237,8 +237,8 @@ export const ceedSchema5 = async (): Promise<void> => {
       }
     }
     console.log(5);
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.log(err);
   }
 };
 //ceed for schema6
@@ -265,7 +265,7 @@ export const ceedSchema6 = async (): Promise<void> => {
       }
     }
     console.log(6);
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.log(err);
   }
 };

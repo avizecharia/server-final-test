@@ -35,9 +35,9 @@ export const getForthAll = async () => {
   try {
     const result = await orgaAndLocateModel.find({}).sort({ numEvent: -1 });
     return result;
-  } catch (error) {
-    console.error(error);
-    throw error;
+  } catch (err) {
+    console.error(err);
+    throw err;
   }
 };
 
@@ -47,9 +47,9 @@ export const getForthArea = async (reg: string) => {
       .findOne({ region: reg })
       .populate("organizeTopFive");
     return result;
-  } catch (error) {
-    console.error(error);
-    throw error;
+  } catch (err) {
+    console.error(err);
+    throw err;
   }
 };
 
@@ -70,8 +70,8 @@ export const getSixthArea = async (oarg: string) => {
   try {
     const result = await sixthModel.find({ organName: oarg });
     return getMax(result);
-  } catch (error) {
-    console.error(error);
-    throw error;
+  } catch (err) {
+    console.error(err);
+    throw err;
   }
 };

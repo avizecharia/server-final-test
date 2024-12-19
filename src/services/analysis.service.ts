@@ -28,9 +28,9 @@ export const getSecAll = async () => {
   try {
     const result = await secModel.find({}).populate("locationArr");
     return result;
-  } catch (error) {
-    console.error(error);
-    throw error;
+  } catch (err) {
+    console.error(err);
+    throw err;
   }
 };
 
@@ -38,9 +38,9 @@ export const getSecCity = async (city: string) => {
   try {
     const result = await secModel.find({ city: city }).populate("locationArr");
     return result;
-  } catch (error) {
-    console.error(error);
-    throw error;
+  } catch (err) {
+    console.error(err);
+    throw err;
   }
 };
 
@@ -50,9 +50,9 @@ export const getSecContry = async (country: string) => {
       .find({ country: country })
       .populate("locationArr");
     return result;
-  } catch (error) {
-    console.error(error);
-    throw error;
+  } catch (err) {
+    console.error(err);
+    throw err;
   }
 };
 
@@ -62,9 +62,9 @@ export const getSecRegion = async (region: string) => {
       .find({ region: region })
       .populate("locationArr");
     return result;
-  } catch (error) {
-    console.error(error);
-    throw error;
+  } catch (err) {
+    console.error(err);
+    throw err;
   }
 };
 
@@ -73,9 +73,9 @@ export const getThirdAll = async () => {
     const result = await thirdModel.find({});
     console.log(result[0]);
     return result;
-  } catch (error) {
-    console.error(error);
-    throw error;
+  } catch (err) {
+    console.error(err);
+    throw err;
   }
 };
 
@@ -84,9 +84,9 @@ export const getThirdByYear = async (year: string) => {
     const result = await thirdModel.find({ year: year });
     console.log(result[0]);
     return result;
-  } catch (error) {
-    console.error(error);
-    throw error;
+  } catch (err) {
+    console.error(err);
+    throw err;
   }
 };
 
@@ -103,9 +103,9 @@ export const getThirdByYearRange = async (
     }
     console.log(list);
     return list;
-  } catch (error) {
-    console.error(error);
-    throw error;
+  } catch (err) {
+    console.error(err);
+    throw err;
   }
 };
 export const getThirdBy5Year = async () => {
@@ -120,9 +120,9 @@ export const getThirdBy5Year = async () => {
     }
     console.log(list);
     return list;
-  } catch (error) {
-    console.error(error);
-    throw error;
+  } catch (err) {
+    console.error(err);
+    throw err;
   }
 };
 
@@ -138,8 +138,8 @@ export const getThirdBy10Year = async () => {
     }
     console.log(list);
     return list;
-  } catch (error) {
-    console.error(error);
-    throw error;
+  } catch (err) {
+    console.error(err);
+    throw err;
   }
 };
