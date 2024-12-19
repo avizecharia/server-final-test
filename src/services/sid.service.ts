@@ -4,6 +4,9 @@ import { firstModel } from "../models/first.model";
 import { secModel } from "../models/sec.model";
 import { locationModel } from "../models/location.model";
 import { thirdModel } from "../models/third.model";
+import { orgaAndLocateModel } from "../models/orgaAndLocate.model";
+import { fourthModel } from "../models/fourth";
+import { fifthModel } from "../models/fifth.model";
 
 export const getFileData = async <T>(): Promise<T[] | void> => {
   try {
@@ -36,7 +39,7 @@ export const ceedSchema1 = async (): Promise<void> => {
         await newQ1.save();
       } else {
         existing.numCasualties = casualties + existing.numCasualties;
-        existing.save();
+        await existing.save();
       }
     }
     console.log("1");
@@ -52,7 +55,7 @@ export const ceedSchema1Attack2 = async (): Promise<void> => {
     let casualties: number = 0;
     for (const element of data as any[]) {
       casualties = calcCasualties(element.nkill, element.nwound);
-      if (typeof element.attacktype2_txt != typeof "hvh") {
+      if (typeof (element.attacktype2_txt) != typeof ("hvh")) {
         continue;
       }
       let existing: mongoose.AnyObject | null = await firstModel.findOne({
@@ -66,8 +69,9 @@ export const ceedSchema1Attack2 = async (): Promise<void> => {
         await newQ1.save();
       } else {
         existing.numCasualties = casualties + existing.numCasualties;
-        existing.save();
+        await existing.save();
       }
+      console.log('1/2');
     }
   } catch (error) {
     console.log(error);
@@ -104,7 +108,7 @@ export const ceedSchema2 = async (): Promise<void> => {
       } else {
         existing.numCasualties = casualties + existing.numCasualties;
         existing.locationArr.push(location);
-        existing.save();
+        await existing.save();
       }
     }
     console.log("2");
@@ -152,3 +156,64 @@ export const calcCasualties = (
   }
   return numOfKill! + numOfWound!;
 };
+
+export const ceedOrgan = async (): Promise<void> => {
+  try {
+      const data: any = await getFileData()
+      for (const element of data as any[]) {
+          let existing: mongoose.AnyObject | null = await orgaAndLocateModel.findOne({ region: element.region_txt, organName: element.gname })
+          if (!existing) {
+              const newOrga = new orgaAndLocateModel({ region: element.region_txt, organName: element.gname, numEvent: 1 })
+              await newOrga.save()
+          }
+          else {
+              existing.numEvent += 1
+              await existing.save()
+          }
+      }
+      console.log(4)
+  } catch (error) {
+      console.log(error)
+  }
+}
+//ceed for schema4
+export const ceedSchema4 = async (): Promise<void> => {
+  try {
+      const data: any = await getFileData()
+      for (const element of data as any[]) {
+          let existing: mongoose.AnyObject | null = await fourthModel.findOne({ region: element.region_txt })
+          if (!existing) {
+              const newQ4 = new fourthModel({ region: element.region_txt })
+              let orgs = await orgaAndLocateModel.find({ region: element.region_txt }).sort({ numEvent: -1 })
+              newQ4.organizeTopFive.push(orgs[4], orgs[3], orgs[2], orgs[1], orgs[0])
+              await newQ4.save()
+          }
+          else {
+              continue
+          }
+      }
+  } catch (error) {
+      console.log(error)
+  }
+}
+
+//ceed for schema5
+export const ceedSchema5 = async (): Promise<void> => {
+  try {
+      const data: any = await getFileData()
+      for (const element of data as any[]) {
+          let existing: mongoose.AnyObject | null = await fifthModel.findOne({ year: element.iyear, organizationName: element.gname })
+          if (!existing) {
+              const newQ5 = new fifthModel({ year: element.iyear, organizationName: element.gname, numEvent: 1 })
+              await newQ5.save()
+          }
+          else {
+              existing.numEvent = existing.numEvent + 1
+              existing.save()
+          }
+      }
+      console.log(5)
+  } catch (error) {
+      console.log(error)
+  }
+}
