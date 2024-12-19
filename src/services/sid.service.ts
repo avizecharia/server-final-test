@@ -7,6 +7,7 @@ import { thirdModel } from "../models/third.model";
 import { orgaAndLocateModel } from "../models/orgaAndLocate.model";
 import { fourthModel } from "../models/fourth";
 import { fifthModel } from "../models/fifth.model";
+import { sixthModel } from "../models/sixth.model";
 
 export const getFileData = async <T>(): Promise<T[] | void> => {
   try {
@@ -55,7 +56,7 @@ export const ceedSchema1Attack2 = async (): Promise<void> => {
     let casualties: number = 0;
     for (const element of data as any[]) {
       casualties = calcCasualties(element.nkill, element.nwound);
-      if (typeof (element.attacktype2_txt) != typeof ("hvh")) {
+      if (typeof element.attacktype2_txt != typeof "hvh") {
         continue;
       }
       let existing: mongoose.AnyObject | null = await firstModel.findOne({
@@ -71,7 +72,7 @@ export const ceedSchema1Attack2 = async (): Promise<void> => {
         existing.numCasualties = casualties + existing.numCasualties;
         await existing.save();
       }
-      console.log('1/2');
+      console.log("1/2");
     }
   } catch (error) {
     console.log(error);
@@ -96,7 +97,7 @@ export const ceedSchema2 = async (): Promise<void> => {
         lat: element.latitude,
         lon: element.longitude,
       });
-      await location.save()
+      await location.save();
       if (!existing) {
         const newQ2 = new secModel({
           region: element.region_txt,
@@ -160,61 +161,111 @@ export const calcCasualties = (
 
 export const ceedOrgan = async (): Promise<void> => {
   try {
-      const data: any = await getFileData()
-      for (const element of data as any[]) {
-          let existing: mongoose.AnyObject | null = await orgaAndLocateModel.findOne({ region: element.region_txt, organName: element.gname })
-          if (!existing) {
-              const newOrga = new orgaAndLocateModel({ region: element.region_txt, organName: element.gname, numEvent: 1 })
-              await newOrga.save()
-          }
-          else {
-              existing.numEvent += 1
-              await existing.save()
-          }
+    const data: any = await getFileData();
+    for (const element of data as any[]) {
+      let existing: mongoose.AnyObject | null =
+        await orgaAndLocateModel.findOne({
+          region: element.region_txt,
+          organName: element.gname,
+        });
+      if (!existing) {
+        const newOrga = new orgaAndLocateModel({
+          region: element.region_txt,
+          organName: element.gname,
+          numEvent: 1,
+        });
+        await newOrga.save();
+      } else {
+        existing.numEvent += 1;
+        await existing.save();
       }
-      console.log(4)
+    }
+    console.log(4);
   } catch (error) {
-      console.log(error)
+    console.log(error);
   }
-}
+};
 export const ceedSchema4 = async (): Promise<void> => {
   try {
-      const data: any = await getFileData()
-      for (const element of data as any[]) {
-          let existing: mongoose.AnyObject | null = await fourthModel.findOne({ region: element.region_txt })
-          if (!existing) {
-              const newQ4 = new fourthModel({ region: element.region_txt })
-              let orgs = await orgaAndLocateModel.find({ region: element.region_txt }).sort({ numEvent: -1 })
-              newQ4.organizeTopFive.push(orgs[4]._id as any, orgs[3]._id as any, orgs[2]._id as any, orgs[1]._id as any, orgs[0]._id as any)
-              await newQ4.save()
-          }
-          else {
-              continue
-          }
+    const data: any = await getFileData();
+    for (const element of data as any[]) {
+      let existing: mongoose.AnyObject | null = await fourthModel.findOne({
+        region: element.region_txt,
+      });
+      if (!existing) {
+        const newQ4 = new fourthModel({ region: element.region_txt });
+        let orgs = await orgaAndLocateModel
+          .find({ region: element.region_txt })
+          .sort({ numEvent: -1 });
+        newQ4.organizeTopFive.push(
+          orgs[4]._id as any,
+          orgs[3]._id as any,
+          orgs[2]._id as any,
+          orgs[1]._id as any,
+          orgs[0]._id as any
+        );
+        await newQ4.save();
+      } else {
+        continue;
       }
-      console.log(4)
+    }
+    console.log(4);
   } catch (error) {
-      console.log(error)
+    console.log(error);
   }
-}
+};
 
 //ceed for schema5
 export const ceedSchema5 = async (): Promise<void> => {
   try {
-      const data: any = await getFileData()
-      for (const element of data as any[]) {
-          let existing: mongoose.AnyObject | null = await fifthModel.findOne({ year: element.iyear, organizationName: element.gname })
-          if (!existing) {
-              const newQ5 = new fifthModel({ year: element.iyear, organizationName: element.gname, numEvent: 1 })
-              await newQ5.save()
-          }
-          else {
-              existing.numEvent = existing.numEvent + 1
-              await existing.save()
-          }
+    const data: any = await getFileData();
+    for (const element of data as any[]) {
+      let existing: mongoose.AnyObject | null = await fifthModel.findOne({
+        year: element.iyear,
+        organizationName: element.gname,
+      });
+      if (!existing) {
+        const newQ5 = new fifthModel({
+          year: element.iyear,
+          organizationName: element.gname,
+          numEvent: 1,
+        });
+        await newQ5.save();
+      } else {
+        existing.numEvent = existing.numEvent + 1;
+        await existing.save();
       }
-      console.log(5)
+    }
+    console.log(5);
   } catch (error) {
-      console.log(error)
+    console.log(error);
   }
-}
+};
+//ceed for schema6
+export const ceedSchema6 = async (): Promise<void> => {
+  try {
+    const data: any = await getFileData();
+    let casualties: number = 0;
+    for (const element of data as any[]) {
+      casualties = await calcCasualties(element.nkill, element.nwound);
+      let existing: mongoose.AnyObject | null = await sixthModel.findOne({
+        region: element.region_txt,
+        organName: element.gname,
+      });
+      if (!existing) {
+        const newQ6 = new sixthModel({
+          region: element.region_txt,
+          organName: element.gname,
+          numCasualties: casualties,
+        });
+        await newQ6.save();
+      } else {
+        existing.numCasualties = existing.numCasualties + casualties;
+        await existing.save();
+      }
+    }
+    console.log(6);
+  } catch (error) {
+    console.log(error);
+  }
+};
