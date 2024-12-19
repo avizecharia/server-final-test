@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
 import fs from "fs/promises";
 import { firstModel } from "../models/first.model";
 import { secModel } from "../models/sec.model";
@@ -96,6 +96,7 @@ export const ceedSchema2 = async (): Promise<void> => {
         lat: element.latitude,
         lon: element.longitude,
       });
+      await location.save()
       if (!existing) {
         const newQ2 = new secModel({
           region: element.region_txt,
@@ -176,7 +177,6 @@ export const ceedOrgan = async (): Promise<void> => {
       console.log(error)
   }
 }
-//ceed for schema4
 export const ceedSchema4 = async (): Promise<void> => {
   try {
       const data: any = await getFileData()
@@ -185,13 +185,14 @@ export const ceedSchema4 = async (): Promise<void> => {
           if (!existing) {
               const newQ4 = new fourthModel({ region: element.region_txt })
               let orgs = await orgaAndLocateModel.find({ region: element.region_txt }).sort({ numEvent: -1 })
-              newQ4.organizeTopFive.push(orgs[4], orgs[3], orgs[2], orgs[1], orgs[0])
+              newQ4.organizeTopFive.push(orgs[4]._id as any, orgs[3]._id as any, orgs[2]._id as any, orgs[1]._id as any, orgs[0]._id as any)
               await newQ4.save()
           }
           else {
               continue
           }
       }
+      console.log(4)
   } catch (error) {
       console.log(error)
   }
@@ -209,7 +210,7 @@ export const ceedSchema5 = async (): Promise<void> => {
           }
           else {
               existing.numEvent = existing.numEvent + 1
-              existing.save()
+              await existing.save()
           }
       }
       console.log(5)
