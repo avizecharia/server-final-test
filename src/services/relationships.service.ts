@@ -6,7 +6,7 @@ import { ISixth } from "../types/interfaces";
 
 export const getFifthByYear = async (myYear: number) => {
   try {
-    return await fifthModel.find({ year: myYear }).sort({numEvent:-1});
+    return await fifthModel.find({ year: myYear }).sort({ numEvent: -1 });
   } catch (err) {
     console.log(err);
     throw err;
@@ -33,7 +33,7 @@ export const getFifthAll = async () => {
 
 export const getForthAll = async () => {
   try {
-    const result = await orgaAndLocateModel.find({}).sort({ numEvent: -1 });  
+    const result = await orgaAndLocateModel.find({}).sort({ numEvent: -1 });
     return result;
   } catch (error) {
     console.error(error);
