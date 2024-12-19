@@ -1,4 +1,4 @@
-import { model, Schema } from "mongoose"
+import mongoose, { model, Schema } from "mongoose"
 import {secQ} from "../types/interfaces"
 import { locationModel } from "./location.model"
 
@@ -19,8 +19,8 @@ export const secSchema = new Schema<secQ>({
         type:String
     },
     locationArr:[{
-        type:locationModel,
-        default:[]
+        type:mongoose.Schema.ObjectId,
+        ref:'location'
     }]
 })
    
