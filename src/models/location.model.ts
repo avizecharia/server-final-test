@@ -8,7 +8,7 @@ export const locationSchema = new Schema<ILocation>({
     },
     lon:{
         type:Number,
-        required:true
+        default:0
     }
 })
    
