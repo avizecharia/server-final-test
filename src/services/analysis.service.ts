@@ -10,7 +10,7 @@ export const getFirst = async () => {
     .sort((a, b) => {
         const aRank = a.item.numCasualties !== undefined ? a.item.numCasualties : Infinity;
         const bRank = b.item.numCasualties !== undefined ? b.item.numCasualties : Infinity;
-        return aRank - bRank || a.index - b.index;
+        return bRank - aRank || b.index - a.index;
     })
     .map(entry => entry.item);
     console.log(res);
@@ -22,8 +22,9 @@ export const getFirst = async () => {
 }
 export const getSec = async () => {
     try {
+
         return 
-    } catch (error) {
+    } catch (err) {
         console.error(err);
         throw err;
     }
