@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import "dotenv/config";
 import { connentToMongo } from "./config/db";
 import analysisRoute from "./routes/analysis.route";
@@ -22,13 +22,11 @@ export const io = new Server(server, {
     methods: "*",
   },
 });
-
 app.use(cors());
 app.use("/api/analysis", analysisRoute);
 app.use("/api/relationships", relationshipsRoute);
-
 io.on("connection", handelConnection);
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`server is runnig on port http://localhost:${PORT}`);
 });

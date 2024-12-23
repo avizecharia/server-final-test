@@ -8,8 +8,10 @@ import { orgaAndLocateModel } from "../models/orgaAndLocate.model";
 import { fourthModel } from "../models/fourth";
 import { fifthModel } from "../models/fifth.model";
 import { sixthModel } from "../models/sixth.model";
+import { attackFullModel } from "../models/attack.model";
+import { IAttackFull } from "../types/interfaces";
 
-export const getFileData = async <T>(): Promise<T[] | void> => {
+export const getData = async <T>(): Promise<T[] | void> => {
   try {
     const dataFromFile: any = await fs.readFile(
       `C:/Users/IMOE001/Documents/Fullstack/finalTest/server/globalterrorismdb_0718dist/globalterrorismdb_0718dist.json`,
@@ -22,10 +24,62 @@ export const getFileData = async <T>(): Promise<T[] | void> => {
   }
 };
 
-//ceed the kindattack1 to the db model
-export const ceedSchema1 = async (): Promise<void> => {
+export const sidAttack = async () => {
   try {
-    const data: any = await getFileData();
+    const data: IAttackFull[] | any = await getData();
+    for (const element of data as any[]) {
+      const {
+        eventid,
+        iyear,
+        imonth,
+        iday,
+        country_txt,
+        region_txt,
+        city,
+        latitude,
+        longitude,
+        attacktype1_txt,
+        targtype1_txt,
+        target1,
+        gname,
+        weaptype1_txt,
+        nkill,
+        nwound,
+        nperps,
+        summary,
+      } = element;
+      const newA = new attackFullModel({
+        eventid,
+        iyear,
+        imonth,
+        iday,
+        country_txt,
+        region_txt,
+        city,
+        latitude,
+        longitude,
+        attacktype1_txt,
+        targtype1_txt,
+        target1,
+        gname,
+        weaptype1_txt,
+        nkill,
+        nwound,
+        nperps,
+        summary,
+      });
+      await newA.save();
+    }
+    console.log("doneee");
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+//ceed the kindattack1 to the db model
+export const cidSchema1 = async (): Promise<void> => {
+  try {
+    const data: any = await getData();
     let casualties: number = 0;
     for (const element of data as any[]) {
       casualties = calcCasualties(element.nkill, element.nwound);
@@ -50,9 +104,9 @@ export const ceedSchema1 = async (): Promise<void> => {
 };
 
 //ceed the kindattack2 to the db model
-export const ceedSchema1Attack2 = async (): Promise<void> => {
+export const cidSchema1Attack2 = async (): Promise<void> => {
   try {
-    const data: any = await getFileData();
+    const data: any = await getData();
     let casualties: number = 0;
     for (const element of data as any[]) {
       casualties = calcCasualties(element.nkill, element.nwound);
@@ -80,10 +134,10 @@ export const ceedSchema1Attack2 = async (): Promise<void> => {
 };
 
 //ceed for schema2
-export const ceedSchema2 = async (): Promise<void> => {
+export const cidSchema2 = async (): Promise<void> => {
   try {
     console.log("start");
-    const data: any = await getFileData();
+    const data: any = await getData();
     console.log("get data");
     for (const element of data as any[]) {
       let casualties: number = 0;
@@ -120,9 +174,9 @@ export const ceedSchema2 = async (): Promise<void> => {
 };
 
 //ceed for schema3
-export const ceedSchema3 = async (): Promise<void> => {
+export const cidSchema3 = async (): Promise<void> => {
   try {
-    const data: any = await getFileData();
+    const data: any = await getData();
     for (const element of data as any[]) {
       let existing: mongoose.AnyObject | null = await thirdModel.findOne({
         year: element.iyear,
@@ -159,9 +213,9 @@ export const calcCasualties = (
   return numOfKill! + numOfWound!;
 };
 
-export const ceedOrgan = async (): Promise<void> => {
+export const cidOrgan = async (): Promise<void> => {
   try {
-    const data: any = await getFileData();
+    const data: any = await getData();
     for (const element of data as any[]) {
       let existing: mongoose.AnyObject | null =
         await orgaAndLocateModel.findOne({
@@ -185,9 +239,9 @@ export const ceedOrgan = async (): Promise<void> => {
     console.log(err);
   }
 };
-export const ceedSchema4 = async (): Promise<void> => {
+export const cidSchema4 = async (): Promise<void> => {
   try {
-    const data: any = await getFileData();
+    const data: any = await getData();
     for (const element of data as any[]) {
       let existing: mongoose.AnyObject | null = await fourthModel.findOne({
         region: element.region_txt,
@@ -216,9 +270,9 @@ export const ceedSchema4 = async (): Promise<void> => {
 };
 
 //ceed for schema5
-export const ceedSchema5 = async (): Promise<void> => {
+export const cidSchema5 = async (): Promise<void> => {
   try {
-    const data: any = await getFileData();
+    const data: any = await getData();
     for (const element of data as any[]) {
       let existing: mongoose.AnyObject | null = await fifthModel.findOne({
         year: element.iyear,
@@ -242,9 +296,9 @@ export const ceedSchema5 = async (): Promise<void> => {
   }
 };
 //ceed for schema6
-export const ceedSchema6 = async (): Promise<void> => {
+export const cidSchema6 = async (): Promise<void> => {
   try {
-    const data: any = await getFileData();
+    const data: any = await getData();
     let casualties: number = 0;
     for (const element of data as any[]) {
       casualties = await calcCasualties(element.nkill, element.nwound);

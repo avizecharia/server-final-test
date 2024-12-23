@@ -1,5 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import { getFirst, getSecAll, getSecRegion, getThirdAll } from "../services/analysis.service";
+import {
+  getFirst,
+  getSecAll,
+  getSecRegion,
+  getThirdAll,
+} from "../services/analysis.service";
 
 export const getFirstData = async (
   req: Request,
@@ -28,15 +33,18 @@ export const getSecData = async (
   }
 };
 
-export const getsecRData = async (req:Request,res:Response,next:NextFunction) => {
+export const getsecRData = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    res.json([await getSecRegion("North America")])
+    res.json([await getSecRegion("North America")]);
   } catch (err) {
     console.log(err);
     next(err);
   }
-}
-
+};
 
 export const getThirdData = async (
   req: Request,

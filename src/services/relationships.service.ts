@@ -1,5 +1,6 @@
 import { fifthModel } from "../models/fifth.model";
 import { fourthModel } from "../models/fourth";
+import { locationModel } from "../models/location.model";
 import { orgaAndLocateModel } from "../models/orgaAndLocate.model";
 import { sixthModel } from "../models/sixth.model";
 import { ISixth } from "../types/interfaces";
@@ -33,7 +34,11 @@ export const getFifthAll = async () => {
 
 export const getForthAll = async () => {
   try {
-    const result = await orgaAndLocateModel.find({}).sort({ numEvent: -1 });
+    const result = await fourthModel
+      .find({})
+      .sort({ numEvent: -1 })
+      .populate("organizeTopFive");
+    console.log(result);
     return result;
   } catch (err) {
     console.error(err);
@@ -46,7 +51,8 @@ export const getForthArea = async (reg: string) => {
     const result = await fourthModel
       .findOne({ region: reg })
       .populate("organizeTopFive");
-    return result;
+    console.log([result]);
+    return [result];
   } catch (err) {
     console.error(err);
     throw err;
@@ -68,10 +74,20 @@ export const getMax = async (arr: ISixth[]) => {
 
 export const getSixthArea = async (oarg: string) => {
   try {
-    const result = await sixthModel.find({ organName: oarg });
-    return getMax(result);
+    const res = await sixthModel.find({ organName: oarg });
+    const result = await getMax(res);
+    console.log(result);
+    return result;
   } catch (err) {
     console.error(err);
     throw err;
+  }
+};
+
+export const allLocations = async () => {
+  try {
+    return await locationModel.find({});
+  } catch (error) {
+    throw error;
   }
 };

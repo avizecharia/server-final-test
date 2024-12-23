@@ -17,7 +17,6 @@ export const getFirst = async () => {
         return bRank - aRank || b.index - a.index;
       })
       .map((entry) => entry.item);
-    console.log(res);
     return res;
   } catch (err) {
     console.error(err);
@@ -26,7 +25,7 @@ export const getFirst = async () => {
 };
 export const getSecAll = async () => {
   try {
-    const result = await secModel.find({}).populate("locationArr");
+    const result = await secModel.find({}).populate("locationArr").limit(1000);
     return result;
   } catch (err) {
     console.error(err);
@@ -48,7 +47,8 @@ export const getSecContry = async (country: string) => {
   try {
     const result = await secModel
       .find({ country: country })
-      .populate("locationArr");
+      .populate("locationArr")
+      .limit(1000);
     return result;
   } catch (err) {
     console.error(err);
@@ -61,7 +61,14 @@ export const getSecRegion = async (region: string) => {
     const result = await secModel
       .find({ region: region })
       .populate("locationArr");
-    return result;
+    let max = result[0];
+    result.map((x) =>
+      x.numCasualties / x.locationArr.length >
+      max.numCasualties / x.locationArr.length
+        ? (max = x)
+        : max
+    );
+    return [max];
   } catch (err) {
     console.error(err);
     throw err;
@@ -71,7 +78,6 @@ export const getSecRegion = async (region: string) => {
 export const getThirdAll = async () => {
   try {
     const result = await thirdModel.find({});
-    console.log(result[0]);
     return result;
   } catch (err) {
     console.error(err);

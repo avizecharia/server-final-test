@@ -2,6 +2,7 @@ import { fifthModel } from "../models/fifth.model";
 import { firstModel } from "../models/first.model";
 import { fourthModel } from "../models/fourth";
 import { locationModel } from "../models/location.model";
+import { orgaAndLocateModel } from "../models/orgaAndLocate.model";
 import { secModel } from "../models/sec.model";
 import { sixthModel } from "../models/sixth.model";
 import { thirdModel } from "../models/third.model";
@@ -268,4 +269,27 @@ export const updateAttack = async (event: IAttack) => {
   } catch (err) {
     console.log(err);
   }
+};
+
+export const calcTopFive = async (event: IAttack) => {
+  try {
+    const { organName, region } = event;
+    let existing: any = await fourthModel.findOne({ region });
+    if (!existing) {
+      throw new Error();
+    } else {
+      let orgs = await orgaAndLocateModel
+        .find({ region })
+        .sort({ numEvent: -1 });
+      existing.organizeTopFive = [];
+      existing.organizeTopFive.push(
+        orgs[0]._id as any,
+        orgs[1]._id as any,
+        orgs[2]._id as any,
+        orgs[3]._id as any,
+        orgs[4]._id as any
+      );
+      await existing.save();
+    }
+  } catch (error) {}
 };
