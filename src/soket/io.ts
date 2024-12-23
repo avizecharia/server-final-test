@@ -46,7 +46,7 @@ export const handelConnection = async (client: Socket) => {
   });
 
   client.on("kind-attacks", async () => {
-    client.emit("kind-attack", await getFirst());
+    client.emit("kind-attacks", await getFirst());
   });
 
   client.on("all-most-hurts", async () => {
@@ -80,6 +80,7 @@ export const handelConnection = async (client: Socket) => {
       "year-range-trend",
       await getThirdByYearRange(yearStart, yearEnd)
     );
+    console.log( await getThirdByYearRange(yearStart, yearEnd))
   });
 
   client.on("5year-trend", async () => {
