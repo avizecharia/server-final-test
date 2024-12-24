@@ -2,9 +2,9 @@ import { NextFunction, Request, Response } from "express";
 import {
   getFirst,
   getSecAll,
-  getSecRegion,
   getThirdAll,
 } from "../services/analysis.service";
+import { createAttack, delAttack } from "../services/crud.service";
 
 export const getFirstData = async (
   req: Request,
@@ -33,13 +33,26 @@ export const getSecData = async (
   }
 };
 
-export const getsecRData = async (
-  req: Request,
+export const postAttack = async (
+  req: Request<any,any,any>,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    res.json([await getSecRegion("North America")]);
+    res.json(await createAttack(req.body));
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+export const deleteAttack = async (
+  req: Request<any,any,any>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    console.log(req.body)
+    res.json(await delAttack(req.body));
   } catch (err) {
     console.log(err);
     next(err);
