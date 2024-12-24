@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { fifthModel } from "../models/fifth.model";
 import { firstModel } from "../models/first.model";
 import { fourthModel } from "../models/fourth";
@@ -59,7 +60,7 @@ const createThird = async (event: IAttack) => {
 
     const exist = await thirdModel.findOne({ year, month });
     if (!exist) {
-      const newThird = new thirdModel({ year, month });
+      const newThird = new thirdModel({ year, month, numEvent: 1 });
       await newThird.save();
     } else {
       exist.numEvent = exist.numEvent + 1;
@@ -70,16 +71,40 @@ const createThird = async (event: IAttack) => {
     console.log(err);
   }
 };
+// natan
+const createOargeAndLocate = async (event: IAttack) => {
+  try {
+    const { region, organName } = event;
+    let existing: mongoose.AnyObject | null = await orgaAndLocateModel.findOne({
+      region,
+      organName,
+    });
+    if (!existing) {
+      const newOrga = new orgaAndLocateModel({
+        region,
+        organName,
+        numEvent: 1,
+      });
+      await newOrga.save();
+    } else {
+      existing.numEvent += 1;
+      await existing.save();
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+//natan
 const createForth = async (event: IAttack) => {
   try {
     const { region } = event;
-
     const exist = await fourthModel.findOne({ region });
     if (!exist) {
-      const newForth = new fourthModel({ region });
+      const newForth = new fourthModel({ region, organizeTopFive: [event] });
       await newForth.save();
+    } else {
+      await calcTopFive(event);
     }
-    return;
   } catch (err) {
     console.log(err);
   }
@@ -87,7 +112,6 @@ const createForth = async (event: IAttack) => {
 const CreateFifth = async (event: IAttack) => {
   try {
     const { organName, year } = event;
-
     const exist = await fifthModel.findOne({
       organizationName: organName,
       year,
@@ -138,6 +162,8 @@ export const createAttack = async (event: IAttack) => {
     await createFirst(event);
     await createSec(event, location);
     await createThird(event);
+    //add
+    await createOargeAndLocate(event);
     await createForth(event);
     await CreateFifth(event);
     await createSixth(event);
@@ -291,5 +317,7 @@ export const calcTopFive = async (event: IAttack) => {
       );
       await existing.save();
     }
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 };
