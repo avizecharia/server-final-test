@@ -9,7 +9,7 @@ import { fourthModel } from "../models/fourth";
 import { fifthModel } from "../models/fifth.model";
 import { sixthModel } from "../models/sixth.model";
 import { attackFullModel } from "../models/attack.model";
-import { IAttackFull1 } from "../types/interfaces";
+import { IAttackFull, IAttackFull1 } from "../types/interfaces";
 
 export const getData = async <T>(): Promise<T[] | void> => {
   try {
@@ -27,46 +27,46 @@ export const getData = async <T>(): Promise<T[] | void> => {
 export const sidAttack = async () => {
   try {
     const data: IAttackFull1[] | any = await getData();
-    for (const element of data as IAttackFull1[]) {
+    for (const element of data as IAttackFull[]) {
       const {
         eventid,
-        attackType,
         city,
-        country,
+        attacktype1_txt,
+        country_txt,
         iday,
-        lat,
-        lon,
-        month,
+        latitude,
+        longitude,
+        imonth,
         nkill,
         nperps,
         nwound,
-        organName,
-        region,
+        gname,
+        region_txt,
         summary,
         target1,
         targtype1_txt,
         weaptype1_txt,
-        year,
+        iyear,
       } = element;
       const newA = new attackFullModel({
         eventid,
-        attackType,
+        attackType: attacktype1_txt,
         city,
-        country,
+        country: country_txt,
         iday,
-        lat,
-        lon,
-        month,
+        lat: latitude,
+        lon: longitude,
+        month: imonth,
         nkill,
         nperps,
         nwound,
-        organName,
-        region,
+        organName: gname,
+        region: region_txt,
         summary,
         target1,
         targtype1_txt,
         weaptype1_txt,
-        year,
+        year: iyear,
       });
       await newA.save();
     }

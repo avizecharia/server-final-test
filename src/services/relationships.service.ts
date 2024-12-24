@@ -1,3 +1,4 @@
+import { attackFullModel } from "../models/attack.model";
 import { fifthModel } from "../models/fifth.model";
 import { fourthModel } from "../models/fourth";
 import { locationModel } from "../models/location.model";
@@ -90,4 +91,15 @@ export const allLocations = async () => {
   } catch (error) {
     throw error;
   }
+};
+
+export const searchText = async (search: string) => {
+  search = search.trim();
+  const events = await attackFullModel
+    .find({
+      summary: { $regex: search, $options: "i" },
+    })
+    .limit(1000);
+  console.log(events);
+  return events;
 };

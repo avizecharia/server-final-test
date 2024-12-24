@@ -60,8 +60,6 @@ export const attackFullSchema = new Schema<IAttackFull1>({
   },
   summary: {
     type: String,
-    default: 0,
   },
-  
 });
 export const attackFullModel = model("attackFull", attackFullSchema);

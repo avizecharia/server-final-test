@@ -6,6 +6,7 @@ import {
   getForthAll,
   getForthArea,
   getSixthArea,
+  searchText,
 } from "../services/relationships.service";
 import {
   getFirst,
@@ -80,7 +81,7 @@ export const handelConnection = async (client: Socket) => {
       "year-range-trend",
       await getThirdByYearRange(yearStart, yearEnd)
     );
-    console.log( await getThirdByYearRange(yearStart, yearEnd))
+    console.log(await getThirdByYearRange(yearStart, yearEnd));
   });
 
   client.on("5year-trend", async () => {
@@ -111,5 +112,8 @@ export const handelConnection = async (client: Socket) => {
 
   client.on("org-most-events-area", async (org: string) => {
     client.emit("org-most-events-area", await getSixthArea(org));
+  });
+  client.on("search", async (query: string) => {
+    client.emit("search", await searchText(query));
   });
 };

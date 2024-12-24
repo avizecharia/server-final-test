@@ -58,25 +58,25 @@ export interface IAttack {
   month?: number;
 }
 
-export interface  IAttackFull1 extends IAttack{
-    eventid?: number;
-    year?: number;
-    month?: number;
-    iday?: number;
-    country?: string;
-    region?: string;
-    city?: string;
-    lat?: number;
-    lon?: number;
-    attackType?: string;
-    targtype1_txt?: string;
-    target1?: string;
-    organName?: string;
-    weaptype1_txt?: string;
-    nkill?: number;
-    nwound?: number;
-    nperps?: number;
-    summary?: string;
+export interface IAttackFull1 extends IAttack {
+  eventid?: number;
+  year?: number;
+  month?: number;
+  iday?: number;
+  country?: string;
+  region?: string;
+  city?: string;
+  lat?: number;
+  lon?: number;
+  attackType?: string;
+  targtype1_txt?: string;
+  target1?: string;
+  organName?: string;
+  weaptype1_txt?: string;
+  nkill?: number;
+  nwound?: number;
+  nperps?: number;
+  summary?: string;
 }
 
 export interface IAttackFull {
