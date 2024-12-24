@@ -233,6 +233,28 @@ const delThird = async (event: IAttack) => {
     console.log(err);
   }
 };
+
+const delOargAndLocated = async (event: IAttack) => {
+  try {
+    const { region, organName } = event;
+    let exist: mongoose.AnyObject | null = await orgaAndLocateModel.findOne({
+      region,
+      organName,
+    });
+    if (!exist) {
+      throw new Error("no one to delete!");
+    } else {
+      if (exist.numEvent - 1 >= 0) {
+        exist.numEvent = exist.numEvent - 1;
+      }
+      await exist.save();
+      await calcTopFive(event)
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const delFifth = async (event: IAttack) => {
   try {
     const { organName, year } = event;
@@ -281,6 +303,7 @@ export const delAttack = async (event: IAttack) => {
     await delFirst(event);
     await delSec(event, location);
     await delThird(event);
+    await delOargAndLocated(event)
     await delFifth(event);
     await delSixth(event);
   } catch (err) {
@@ -299,7 +322,7 @@ export const updateAttack = async (event: IAttack) => {
 
 export const calcTopFive = async (event: IAttack) => {
   try {
-    const { organName, region } = event;
+    const {  region } = event;
     let existing: any = await fourthModel.findOne({ region });
     if (!existing) {
       throw new Error();
