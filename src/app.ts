@@ -7,6 +7,7 @@ import http from "http";
 import { Server } from "socket.io";
 import cors from "cors";
 import { handelConnection } from "./soket/io";
+import { json } from "stream/consumers";
 
 connentToMongo();
 
@@ -23,6 +24,7 @@ export const io = new Server(server, {
   },
 });
 app.use(cors());
+app.use(express.json())
 app.use("/api/analysis", analysisRoute);
 app.use("/api/relationships", relationshipsRoute);
 io.on("connection", handelConnection);
@@ -30,3 +32,7 @@ io.on("connection", handelConnection);
 server.listen(PORT, () => {
   console.log(`server is runnig on port http://localhost:${PORT}`);
 });
+
+// app.listen(PORT, () => {
+//   console.log(`server is runnig on port http://localhost:${PORT}`);
+// });

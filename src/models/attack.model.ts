@@ -1,15 +1,15 @@
 import { model, Schema } from "mongoose";
-import { IAttackFull } from "../types/interfaces";
+import { IAttackFull, IAttackFull1 } from "../types/interfaces";
 
-export const attackFullSchema = new Schema<IAttackFull>({
+export const attackFullSchema = new Schema<IAttackFull1>({
   eventid: {
     type: Number,
   },
-  iyear: {
+  year: {
     type: Number,
     default: 0,
   },
-  imonth: {
+  month: {
     type: Number,
     default: 0,
   },
@@ -17,24 +17,24 @@ export const attackFullSchema = new Schema<IAttackFull>({
     type: Number,
     default: 0,
   },
-  country_txt: {
+  country: {
     type: String,
   },
-  region_txt: {
+  region: {
     type: String,
   },
   city: {
     type: String,
   },
-  latitude: {
+  lat: {
     type: Number,
     default: 0,
   },
-  longitude: {
+  lon: {
     type: Number,
     default: 0,
   },
-  attacktype1_txt: {
+  attackType: {
     type: String,
   },
   targtype1_txt: {
@@ -43,7 +43,7 @@ export const attackFullSchema = new Schema<IAttackFull>({
   target1: {
     type: String,
   },
-  gname: {
+  organName: {
     type: String,
   },
   weaptype1_txt: {
@@ -62,5 +62,6 @@ export const attackFullSchema = new Schema<IAttackFull>({
     type: String,
     default: 0,
   },
+  
 });
 export const attackFullModel = model("attackFull", attackFullSchema);

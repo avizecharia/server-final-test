@@ -1,9 +1,10 @@
-import { Router } from "express";
+import { Request, Response, Router } from "express";
 import {
+  deleteAttack,
   getFirstData,
   getSecData,
-  getsecRData,
   getThirdData,
+  postAttack,
 } from "../controllers/analysis.controller";
 
 const router = Router();
@@ -11,5 +12,5 @@ const router = Router();
 router.get("/deadliest-attack-types", getFirstData);
 router.get("/highest-casualty-regions", getSecData);
 router.get("/incident-trends", getThirdData);
-router.get("/f", getsecRData);
+router.delete("/f", deleteAttack);
 export default router;
