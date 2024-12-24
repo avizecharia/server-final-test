@@ -7,8 +7,67 @@ import { orgaAndLocateModel } from "../models/orgaAndLocate.model";
 import { secModel } from "../models/sec.model";
 import { sixthModel } from "../models/sixth.model";
 import { thirdModel } from "../models/third.model";
-import { IAttack, ILocation } from "../types/interfaces";
+import {
+  IAttack,
+  IAttackFull,
+  IAttackFull1,
+  ILocation,
+} from "../types/interfaces";
 import { calcCasualties } from "./sid.service";
+import { attackFullModel } from "../models/attack.model";
+
+const createAttackFull = async (event: IAttackFull1) => {
+  try {
+    const {
+      attackType,
+      city,
+      country,
+      eventid,
+      iday,
+      lat,
+      lon,
+      month,
+      nkill,
+      nperps,
+      nwound,
+      organName,
+      region,
+      summary,
+      target1,
+      targtype1_txt,
+      weaptype1_txt,
+      year,
+    } = event;
+    const exist = await attackFullModel.find({ eventid });
+    if (!exist) {
+      const newAttack = new attackFullModel({
+        attackType,
+        city,
+        country,
+        eventid,
+        iday,
+        lat,
+        lon,
+        month,
+        nkill,
+        nperps,
+        nwound,
+        organName,
+        region,
+        summary,
+        target1,
+        targtype1_txt,
+        weaptype1_txt,
+        year,
+      });
+      await newAttack.save();
+    } else {
+      throw new Error("attack with the event id already exist");
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 const createFirst = async (event: IAttack) => {
   try {
@@ -90,6 +149,7 @@ const createOargeAndLocate = async (event: IAttack) => {
       existing.numEvent += 1;
       await existing.save();
     }
+    console.log("oarg");
   } catch (error) {
     console.log(error);
   }
@@ -100,7 +160,11 @@ const createForth = async (event: IAttack) => {
     const { region } = event;
     const exist = await fourthModel.findOne({ region });
     if (!exist) {
-      const newForth = new fourthModel({ region, organizeTopFive: [event] });
+      const myEvent = await orgaAndLocateModel.findOne({ region });
+      const newForth = new fourthModel({
+        region,
+        organizeTopFive: [myEvent!._id],
+      });
       await newForth.save();
     } else {
       await calcTopFive(event);
@@ -154,11 +218,12 @@ const createSixth = async (event: IAttack) => {
   }
 };
 
-export const createAttack = async (event: IAttack) => {
+export const createAttack = async (event: IAttackFull1) => {
   try {
     const { lat, lon } = event;
     const location = new locationModel({ lat, lon });
     await location.save();
+    await createAttackFull(event);
     await createFirst(event);
     await createSec(event, location);
     await createThird(event);
@@ -167,11 +232,27 @@ export const createAttack = async (event: IAttack) => {
     await createForth(event);
     await CreateFifth(event);
     await createSixth(event);
+    console.log("done");
+
+    return true;
   } catch (err) {
     console.log(err);
   }
 };
-
+const delAttackFull = async (event: IAttackFull1) => {
+  try {
+    const exist = await attackFullModel.find({ eventid: event.eventid });
+    if (!exist) {
+      throw new Error("[delte] this event is not found");
+    }
+    const delEvent = await attackFullModel.findOneAndDelete({
+      eventid: event.eventid,
+    });
+    console.log(delEvent, "delEvent");
+  } catch (error) {
+    console.log(error);
+  }
+};
 const delFirst = async (event: IAttack) => {
   try {
     const { attackType, nkill, nwound } = event;
@@ -233,7 +314,7 @@ const delThird = async (event: IAttack) => {
     console.log(err);
   }
 };
-
+// natan
 const delOargAndLocated = async (event: IAttack) => {
   try {
     const { region, organName } = event;
@@ -248,7 +329,7 @@ const delOargAndLocated = async (event: IAttack) => {
         exist.numEvent = exist.numEvent - 1;
       }
       await exist.save();
-      await calcTopFive(event)
+      await calcTopFive(event);
     }
   } catch (error) {
     console.log(error);
@@ -300,10 +381,11 @@ export const delAttack = async (event: IAttack) => {
     const { lat, lon } = event;
     const location = new locationModel({ lat, lon });
     await location.save();
+    await delAttackFull(event);
     await delFirst(event);
     await delSec(event, location);
     await delThird(event);
-    await delOargAndLocated(event)
+    await delOargAndLocated(event);
     await delFifth(event);
     await delSixth(event);
   } catch (err) {
@@ -322,10 +404,19 @@ export const updateAttack = async (event: IAttack) => {
 
 export const calcTopFive = async (event: IAttack) => {
   try {
-    const {  region } = event;
+    const { region } = event;
     let existing: any = await fourthModel.findOne({ region });
     if (!existing) {
       throw new Error();
+    } else if (existing.organizeTopFive.length < 5) {
+      let orgs = await orgaAndLocateModel
+        .find({ region })
+        .sort({ numEvent: -1 });
+      existing.organizeTopFive = [];
+      for (let index = existing.organizeTopFive.length; index >= 0; index--) {
+        existing.organizeTopFive.push(orgs[index]);
+      }
+      await existing.save();
     } else {
       let orgs = await orgaAndLocateModel
         .find({ region })
@@ -340,6 +431,7 @@ export const calcTopFive = async (event: IAttack) => {
       );
       await existing.save();
     }
+    console.log("calc");
   } catch (error) {
     console.log(error);
   }
