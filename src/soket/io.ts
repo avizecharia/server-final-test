@@ -46,26 +46,24 @@ export const handelConnection = async (client: Socket) => {
     io.emit("read-event");
   });
 
-  client.on("kind-attacks", async () => {
-    client.emit("kind-attacks", await getFirst());
+  client.on("getFirst", async () => {
+    client.emit("getFirst", await getFirst());
   });
 
-  client.on("all-most-hurts", async () => {
-    io.emit("all-most-hurts", await getSecAll());
+  client.on("getSecData", async () => {
+    io.emit("getSecData", await getSecAll());
   });
 
-  client.on("city-most-hurts", async (city: string) => {
-    client.emit("city-most-hurts", await getSecCity(city));
+  client.on("getsec_3", async (city: string) => {
+    client.emit("getsec_3", await getSecCity(city));
   });
 
-  client.on("country-most-hurts", async (country: string) => {
-    client.emit("city-most-hurts", await getSecContry(country));
+  client.on("getsec_2", async (country: string) => {
+    client.emit("getsec_2", await getSecContry(country));
   });
 
-  client.on("region-most-hurts", async (region: string) => {
-    console.log("odods");
-
-    client.emit("region-most-hurts", await getSecRegion(region));
+  client.on("getsec_1", async (region: string) => {
+    client.emit("getsec_1", await getSecRegion(region));
   });
 
   client.on("all-trend", async () => {
@@ -114,6 +112,7 @@ export const handelConnection = async (client: Socket) => {
     client.emit("org-most-events-area", await getSixthArea(org));
   });
   client.on("search", async (query: string) => {
+    
     client.emit("search", await searchText(query));
   });
 };

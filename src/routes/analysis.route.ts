@@ -12,5 +12,5 @@ const router = Router();
 router.get("/deadliest-attack-types", getFirstData);
 router.get("/highest-casualty-regions", getSecData);
 router.get("/incident-trends", getThirdData);
-router.delete("/f", deleteAttack);
+router.get("/f", getSecData);
 export default router;
