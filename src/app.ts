@@ -23,6 +23,7 @@ export const io = new Server(server, {
     methods: "*",
   },
 });
+
 app.use(cors());
 app.use(express.json());
 app.use("/api/analysis", analysisRoute);
