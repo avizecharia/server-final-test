@@ -7,8 +7,10 @@ import http from "http";
 import { Server } from "socket.io";
 import cors from "cors";
 import { handelConnection } from "./soket/io";
+import { cidOrgan, cidSchema1, cidSchema1Attack2, cidSchema2, cidSchema3, cidSchema4, cidSchema5, cidSchema6, sidAttack } from "./services/sid.service";
 
 connentToMongo();
+
 
 const app = express();
 

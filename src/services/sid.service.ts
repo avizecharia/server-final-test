@@ -70,7 +70,7 @@ export const sidAttack = async () => {
       });
       await newA.save();
     }
-    console.log("doneee");
+    console.log("sidAttack");
   } catch (err) {
     console.log(err);
   }
@@ -97,7 +97,7 @@ export const cidSchema1 = async (): Promise<void> => {
         await existing.save();
       }
     }
-    console.log("1");
+    console.log("cidSchema1");
   } catch (err) {
     console.log(err);
   }
@@ -126,7 +126,7 @@ export const cidSchema1Attack2 = async (): Promise<void> => {
         existing.numCasualties = casualties + existing.numCasualties;
         await existing.save();
       }
-      console.log("1/2");
+      console.log("cidSchema1Attack2");
     }
   } catch (err) {
     console.log(err);
@@ -167,7 +167,7 @@ export const cidSchema2 = async (): Promise<void> => {
         await existing.save();
       }
     }
-    console.log("2");
+    console.log("cidSchema2");
   } catch (err) {
     console.log(err);
   }
@@ -194,7 +194,7 @@ export const cidSchema3 = async (): Promise<void> => {
         await existing.save();
       }
     }
-    console.log(3);
+    console.log("cidSchema3");
   } catch (err) {
     console.log(err);
   }
@@ -234,7 +234,7 @@ export const cidOrgan = async (): Promise<void> => {
         await existing.save();
       }
     }
-    console.log(4);
+    console.log("cidOrgan");
   } catch (err) {
     console.log(err);
   }
@@ -263,7 +263,7 @@ export const cidSchema4 = async (): Promise<void> => {
         continue;
       }
     }
-    console.log(4);
+    console.log("cidSchema4");
   } catch (err) {
     console.log(err);
   }
@@ -290,7 +290,7 @@ export const cidSchema5 = async (): Promise<void> => {
         await existing.save();
       }
     }
-    console.log(5);
+    console.log("cidSchema5");
   } catch (err) {
     console.log(err);
   }
@@ -318,7 +318,7 @@ export const cidSchema6 = async (): Promise<void> => {
         await existing.save();
       }
     }
-    console.log(6);
+    console.log("cidSchema6");
   } catch (err) {
     console.log(err);
   }

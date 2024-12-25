@@ -50,8 +50,8 @@ export const handelConnection = async (client: Socket) => {
     client.emit("kind-attacks", await getFirst());
   });
 
-  client.on("getSecData", async () => {
-    io.emit("getSecData", await getSecAll());
+  client.on("all-most-hurts", async () => {
+    io.emit("all-most-hurts", await getSecAll());
   });
 
   client.on("city-most-hurts", async (city: string) => {
